@@ -3,7 +3,7 @@ cursonextjs/
 app-delivery/node_modules/
 api-delivery/node_modules/
 app-delivery/.expo/
-api/.vscode/
+api-delivery/.vscode/
 api-delivery/.env
 api-delivery/sintegra.php
 app-delivery/src/server/baseUrl.js
