@@ -4,6 +4,8 @@
  * @readonly
  */
 
+const {getIO} =require('../config/socket/socket');
+
 const PedidoService = require('../services/pedido.service');
 
 class PedidoController {
@@ -49,10 +51,25 @@ class PedidoController {
             let totalPedido = parseFloat(taxaEntrega) + subTotalPedido;
           
 
-           
-           const {statusCode, message} = await PedidoService.createOrder(order, numeroPedido, subTotalPedido, totalPedido, taxaEntrega);
+          const {statusCode, message, pedido_id} = await PedidoService.createOrder(order, numeroPedido, subTotalPedido, totalPedido, taxaEntrega);
+
+          if(pedido_id) {
+
+               const { result } = await PedidoService.dataOrder({id_pedido: pedido_id, id_usuario : order.id_usuario})
+               const io = getIO();
+               io.to(`restaurante_${order.restaurante_id}`).emit('novo_pedido', result)
+        }
 
            return res.status(201).json({statusCode, message});
+       }
+
+       async updateStatus(req, res) {
+
+             const { payload } = req.body;
+
+             const {statusCode, message } = await PedidoService.updateStatus(payload);
+
+             return res.status(statusCode).json({message});
        }
 }
 

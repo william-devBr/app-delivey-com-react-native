@@ -137,7 +137,7 @@ if(error) {
              </View>
 
               <View style={{marginTop: 10,alignItems: "center", flexDirection:"row", justifyContent:"space-between"}}>
-                    <Text style={styles.taxaEntrega}>pedido mínimo : R$10,00</Text>
+                    <Text style={styles.taxaEntrega}>pedido mínimo : {rest.restaurante?.pedido_minimo ?? 'R$0,00'}</Text>
                       <View> 
                        
                        <Text style={styles.taxaEntrega}>Taxa de entrega:  

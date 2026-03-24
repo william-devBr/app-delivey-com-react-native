@@ -1,0 +1,14 @@
+
+
+.avisoContainer {
+    position: absolute;
+    flex-direction: column;
+    top: 70%;
+    right: 10px;
+    background-color: white;
+}
+.btnAceitar  {
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}

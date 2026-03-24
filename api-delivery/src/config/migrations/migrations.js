@@ -22,17 +22,6 @@ async function runMigrations() {
     console.log('Tabela USUARIO criada com sucesso!');
 
 
-    /** TIPO RESTAURANTE */
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS tipo (
-        tipo_id SERIAL PRIMARY KEY,
-        nome VARCHAR(20) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        active BOOLEAN NOT NULL DEFAULT true
-      );
-    `);
-    console.log('Tabela TIPO criada com sucesso!');
-
       /**CATEGORIAS RESTAURANTES */
      await db.query(`
        CREATE TABLE IF NOT EXISTS categoria_restaurantes(
@@ -54,6 +43,7 @@ async function runMigrations() {
         icone TEXT NULL,
         id_categoria INT NOT NULL,
         vl_taxa_entrega NUMERIC(10,2) NOT NULL DEFAULT 0.00, 
+        pedido_minimo NUMERI(10,2)  NULL DEFAULT 0.00,
         endereco VARCHAR(100) NOT NULL,
         complemento VARCHAR(50) NULL,
         bairro  VARCHAR(50) NOT NULL,

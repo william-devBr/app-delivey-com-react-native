@@ -1,9 +1,5 @@
-/**
- * AUTH REPOSITORY
- * @readonly;
- */
-
 const db = require('../database/db');
+
 
 class AuthRepository {
 

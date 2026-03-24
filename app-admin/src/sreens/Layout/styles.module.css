@@ -1,0 +1,15 @@
+
+.layoutContainer {
+    display: flex;
+    height: 100vh;
+    background-color: #f6f6f6;
+}
+
+.asideContainer {
+    flex:0.2;
+    background-color: var(--primary-color);
+}
+
+.headerContainer {
+    flex: 0.8
+}

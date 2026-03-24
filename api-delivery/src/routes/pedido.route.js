@@ -17,5 +17,6 @@ route.get('/:id_pedido',validateToken,PedidoController.findById);
 
 /**POST, PUT, DELETE */
 route.post('/', validateToken, PedidoController.createOrder)
+route.put('/status', validateToken, PedidoController.updateStatus)
 
 module.exports = route;

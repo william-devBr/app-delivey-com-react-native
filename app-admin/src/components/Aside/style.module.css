@@ -1,0 +1,39 @@
+
+.navContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.linkContainer { }
+
+.navContainer li {
+     min-width: 100px;
+     width: 100%;
+     padding: 5px 10px;
+     text-align: center;
+     border-radius: 10px;
+     color:white;
+    font-weight: bold;
+}
+
+.navContainer li:nth-child(2) {
+    margin-top: 100px;
+}
+
+.navContainer li:last-child {
+    margin-top: 100px;
+}
+
+.linkActive {
+     min-width: 100px;
+     width: 100%;
+     padding: 5px 10px;
+     text-align: center;
+     border-radius: 10px;
+     color: var(--primary-color);
+    font-weight: bold;
+   /** background-color: rgba(255 ,255 ,255 ,0.3);*/
+   background-color: #FFF;
+   
+}

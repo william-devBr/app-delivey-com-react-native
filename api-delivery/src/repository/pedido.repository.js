@@ -51,6 +51,27 @@ class PedidoRepository {
            return detalhesPedido;
 
        }
+       //** retorna os dados do pedido com o usuário */
+       async dataOrder(data) {
+            
+            const sql = `SELECT p.*, u.name,
+                         JSON_AGG(
+                          JSON_BUILD_OBJECT(
+                           'rua', e.endereco,
+                           'numero', e.numero,
+                           'complemento', e.complemento,
+                           'bairro', e.bairro
+                           ) 
+                         ) AS endereco
+                         FROM pedido p
+                        LEFT JOIN usuario u ON(p.id_usuario = u.user_id)
+                        LEFT JOIN endereco e ON(u.user_id = e.usuario_id)
+                        WHERE p.id = $1 AND u.user_id = $2
+                        GROUP BY p.id,u.name
+                        `;
+               return await db.query(sql,[data.id_pedido, data.id_usuario])
+
+       }
 
        /** cria um novo pedido  */
        async createOrder(order) {
@@ -73,9 +94,19 @@ class PedidoRepository {
              let insertItens = `INSERT INTO itens (id_pedido, id_produto, quantidade, sub_total, observacao)
                                 VALUES ${placeholders.join(',')}`;
                                 
-             return await db.query(insertItens, values);
+              await db.query(insertItens, values);
+
+              return idPedido;
        
      }
+
+       /** atualiza o status do pedido */
+       async updateStatus(numero, status) {
+
+            const sql = `UPDATE pedido SET status_pedido = $1 WHERE numero_pedido = $2`;
+
+            return await db.query(sql, [status, numero])
+       }
 }
 
 module.exports = new PedidoRepository;

@@ -1,0 +1,48 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+
+.container h1 {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.cardContainer {
+    margin-bottom: 40px;
+}
+
+.pedidosContainer { 
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 300px;
+}
+
+.listPages {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+
+}
+.listPages button {
+
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #c3c3c3;
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 15px
+
+}
+
+.activePage {
+    background-color: royalblue !important;
+    color: white;
+    font-weight: 700;
+}
+

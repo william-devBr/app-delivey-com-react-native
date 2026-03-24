@@ -12,7 +12,7 @@ class AuthController {
     async login(req, res) {
 
         const {email, password} = req.body;
-
+  
         let user = await AuthService.login(email);
     
         if(!user || user.rowCount === 0) {
