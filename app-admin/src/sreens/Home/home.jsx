@@ -9,7 +9,7 @@ import styles from './style.module.css';
 export default function Home() {
 
    
- const {pedidos,setPedidos, loadPedidos, pagination} = useContext(OrderContext);
+ const {pedidos,setPedidos, loadPedidos, pagination, loadingPedido} = useContext(OrderContext);
  const {restaurante} = useContext(RestauranteContext);
  const [paginaAtual, setPaginaAtual] = useState(1);
  const [loading, setLoading] = useState(false);
@@ -33,8 +33,11 @@ export default function Home() {
  }
 
 
-  useEffect(()=> { loadPedidos() }, []);//carrega os pedidos
-  if(loading) return <div style={{display : 'flex', alignItems:'center', justifyContent : 'center',marginTop: 150}}>Aguarde...</div>
+  useEffect(()=> { 
+        setTimeout(()=> loadPedidos(), 3000)   
+ }, []);//carrega os pedidos
+
+  if(loading || loadingPedido) return <div style={{display : 'flex', alignItems:'center', justifyContent : 'center',marginTop: 150}}>Aguarde...</div>
 
      return(
      

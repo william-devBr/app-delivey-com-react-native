@@ -26,7 +26,14 @@ class ProdutoController {
      async create(req, res) { }
 
      /*** atualiza os dados do produto passando ID produto e ID restaurante */
-     async update(req, res) { }
+     async update(req, res) { 
+
+           const fieldsValues = req.body;
+           const { id, id_restaurante } = req.params;
+           const {statusCode, message} = await ProdutoService.update(fieldsValues, id, id_restaurante);
+
+          return res.status(statusCode).json({message})
+     }
 
      /** atualiza o status do produto tipo boolean */
      async destroy(req, res)  { }

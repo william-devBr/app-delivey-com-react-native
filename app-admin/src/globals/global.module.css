@@ -2,3 +2,48 @@
 body {
  --primary-color : rgb(240,90,90);
 }
+
+.borderTest {border: 1px solid crimson}
+
+.flex {
+    display: flex;
+}
+.itemsCenter {
+    align-items: center;
+}
+.justifyCenter {
+    justify-content: center;
+}
+.spaceBetween {
+    justify-content: space-between;
+}
+.flexRow {
+    flex-direction: row;
+}
+.flexColumn {
+    flex-direction: column;
+}
+.thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.textSmall {
+    font-size: small;
+}
+.textlightGray {
+    color : lightgrey
+}
+.textMediumGray {
+    color: gray
+}
+.textDarkGray {
+    color: dimgray
+}
+.fontBold {
+    font-weight: bold;
+}
+.rowGap5 {
+    gap: 5%
+}
+button {cursor: pointer;}

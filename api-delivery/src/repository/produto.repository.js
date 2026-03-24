@@ -29,7 +29,22 @@ class ProdutoRepository {
      async create(restaurante_id, categorua_id,  produto) { }
 
      /*** atualiza os dados do produto passando ID produto e ID restaurante */
-     async update(idProduto, restaurante_id,  detalhes) { }
+     async update(fieldValues, id, id_restaurante) {
+        
+              let keys = Object.keys(fieldValues);
+              const values = Object.values(fieldValues);
+
+              let sql = `UPDATE produto SET`;
+              keys = keys.map((key, index)  => {
+                   return `${key}=$${index + 1}`
+              });
+
+              sql+=` ${keys.join(',')}`;
+              sql+= ` WHERE produto_id=$${keys.length + 1} AND restaurante_id=$${keys.length + 2}`;
+             
+              return await db.query(sql, [...values, id, id_restaurante]);
+
+      }
 
     /** atualiza o status do produto tipo boolean */
      async destroy(produto_id, status)  { }

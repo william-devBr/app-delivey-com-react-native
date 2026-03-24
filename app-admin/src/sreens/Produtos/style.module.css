@@ -1,0 +1,33 @@
+@import url('../../globals/global.module.css');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+.container h1 {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.cardContainer {
+    background-color: #fff;
+    width: 100%;
+    padding: 8px;
+}
+.description {
+    flex: 2;
+    width: 100%;
+    max-width: 25%;
+    overflow:hidden;
+    flex-wrap: wrap;
+   
+}
+.ml5 {
+    margin-left: 10px;
+}
+
+.width100 {
+    width: 100px !important;
+}

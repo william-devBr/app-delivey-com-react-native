@@ -27,7 +27,15 @@ class ProdutoService {
      async create(restaurante_id, categorua_id,  produto) { }
 
      /*** atualiza os dados do produto passando ID produto e ID restaurante */
-     async update(idProduto, restaurante_id,  detalhes) { }
+     async update(fieldValues, id, id_restaurante) { 
+
+        try {
+              await ProdutoRepository.update(fieldValues,id, id_restaurante);
+              return {statusCode: 201, message : 'success'};
+        }catch(error) {
+             return {statusCode : 500, message : error.message}
+        }
+     }
 
     /** atualiza o status do produto tipo boolean */
      async destroy(produto_id, status)  { }

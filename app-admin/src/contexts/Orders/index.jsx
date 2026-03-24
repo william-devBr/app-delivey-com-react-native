@@ -16,6 +16,7 @@ const OrderProvider = ({children})=> {
     const {restaurante} = useContext(RestauranteContext);
     const [pedidos, setPedidos] = useState([]);
     const [pagination, setPagination] = useState(0);
+    const [loadingPedido, setLoadingPedido] = useState(true)
 
    const loadPedidos = async()=> {
 
@@ -27,6 +28,8 @@ const OrderProvider = ({children})=> {
                 setPagination(data.paginas)
         } catch (error) {
             console.log(error?.response)
+        }finally {
+            setLoadingPedido(false);
         }
    }
 
@@ -51,7 +54,8 @@ const OrderProvider = ({children})=> {
 
    },[restaurante.restaurante_id])
     
-    return <OrderContext.Provider value={{pedidos, setPedidos, loadPedidos, pagination}}>
+    return <OrderContext.Provider value={{pedidos, setPedidos,
+                                          loadPedidos, pagination, loadingPedido}}>
          {children}
       </OrderContext.Provider>
 }

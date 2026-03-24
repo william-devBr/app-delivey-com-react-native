@@ -21,3 +21,7 @@ export const dataConverter = (data) => {
 
     return dataPedido.toLocaleDateString('pt-BR').slice(0,10)
 }
+
+export const priceConverter = (price)=> {
+    return new Intl.NumberFormat("pt-BR", {style: "currency", currency : "BRL"}).format(price);
+}
