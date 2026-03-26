@@ -31,13 +31,41 @@ class AdminController {
         const params = req.params;
        
         const paginaAtual  = parseInt(req.query.page) || 1;
-        const limit = 10; 
+        const limit = 10; //limite de pedidos por página
         const offset = (paginaAtual - 1) * limit;
 
              
         const {statusCode, result, message, total} = await AdminService.pedidos(params, limit, offset);
         const paginas = Math.ceil(total / limit)
         return res.status(statusCode).json({result, message, paginas});
+    }
+
+    async produtos(req, res) {
+
+
+        const limit = 10; //limite de produtos por pagina
+        const paginaAtual = parseInt(req.query.page ) ||  1;
+        const offset = (paginaAtual - 1) * limit;
+
+        const restaurante_id = req.params.id_restaurante;
+
+
+        const {statusCode, message, result, total} = await AdminService.produtos(restaurante_id, limit, offset);
+
+        const paginas = Math.ceil(total / limit);
+
+        return res.status(statusCode).json({message, result, paginas});
+
+    }
+
+    async busca(req,res) {
+           
+         const {q} = req.query;
+         const busca = q.toLowerCase();
+         const {id_restaurante} = req.params;
+
+         const {statusCode, message, result} = await AdminService.busca(busca, id_restaurante);
+         return res.status(statusCode).json({result, message});
     }
 }
 

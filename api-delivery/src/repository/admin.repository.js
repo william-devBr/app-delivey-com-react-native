@@ -55,6 +55,28 @@ class AdminRepository {
 
      }
 
+     /** lista os produtos */
+     async produtos(id_restaurante, limit, offset) {
+
+          const sql = `SELECT * FROM produto WHERE restaurante_id = $1 LIMIT $2 OFFSET $3`;
+
+          const totalProdutos = `SELECT COUNT(*) as total FROM produto WHERE restaurante_id = $1`;
+
+          const [resData, resTotal] = await Promise.all([
+                    db.query(sql,[id_restaurante, limit, offset]),
+                    db.query(totalProdutos,[id_restaurante])
+          ])
+          return {resData, resTotal}
+     }
+
+     /** busca de produtos pelo nome */  
+     async busca(busca, id_restaurante) {
+
+          const sql = `SELECT * FROM produto WHERE LOWER(name) LIKE $1 AND restaurante_id = $2`;
+
+          return await db.query(sql,[`%${busca}%`, id_restaurante]);
+     }
+
 }
 
 module.exports = new AdminRepository;

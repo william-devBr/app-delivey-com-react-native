@@ -34,6 +34,9 @@ export default function Home() {
 
 
   useEffect(()=> { 
+     
+    if(!restaurante.restaurante_id) return;
+    
         setTimeout(()=> loadPedidos(), 3000)   
  }, []);//carrega os pedidos
 

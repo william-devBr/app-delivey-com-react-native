@@ -12,13 +12,13 @@
 }
 
 .cardContainer {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .pedidosContainer { 
     overflow-y: scroll;
     scroll-behavior: smooth;
-    height: 300px;
+    height: 350px;
 }
 
 .listPages {

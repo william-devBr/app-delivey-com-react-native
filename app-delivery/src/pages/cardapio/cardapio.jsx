@@ -63,6 +63,7 @@ const  fetchData = async ()=> {
        try {
 
           const { data } = await http.get(`restaurante/${id}`);
+          console.log(data)
 
           const  { itens }  = data;
         
@@ -190,7 +191,7 @@ if(error) {
          
 
           {/** listagem de produtos */}
-      
+         
           <View style={styles.categorias}>
           
              <View style={styles.categoriaArea}>
@@ -220,13 +221,13 @@ if(error) {
                                 >
                                    
                                     <View style={styles.imgContainer} >
-                                           <Image source={{uri:item.imgurl}} style={styles.thumbItem} resizeMode="cover"  />
+                                           <Image source={{uri:item.imgurl}} style={styles.thumbItem} resizeMode="contain"  />
                                     </View>
                            
             
                                 <View style={styles.textArea}>
                                     <Text style={styles.cardTitle}>{item.name}</Text>
-                                    <Text style={styles.cardDescription}>{item.description}</Text>
+                                    <Text style={styles.cardDescription} numberOfLines={2} ellipsizeMode={'tail'}>{item.description}</Text>
                                 </View>
 
                                 <View>
@@ -249,6 +250,7 @@ if(error) {
              </View>
           </View>
           </View>
+         
           
     </View>
     </ScrollView>

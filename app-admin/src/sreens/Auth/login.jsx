@@ -79,7 +79,7 @@ export default function Login() {
             
                 <h2>Acessar minha conta</h2>
            
-            <form>
+            <form className="form-login">
                 <div className="form-group">
                     <div>
                         <label>e-mail</label>

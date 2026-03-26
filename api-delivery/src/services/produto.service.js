@@ -8,7 +8,7 @@ const ProdutoRepository = require('../repository/produto.repository');
 
 class ProdutoService {
 
-        /** lista todos os produtos pelo ID do restaurante */
+    /** lista todos os produtos pelo ID do restaurante */
     async findAll(restaurante_id) { 
 
         try {

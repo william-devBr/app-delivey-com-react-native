@@ -1,25 +1,39 @@
 
-
+/** PRODUTOS PAHGE */
 import {RestauranteContext} from '../../contexts/Restaurante';
 import { useContext, useState, useEffect } from 'react';
 import { priceConverter } from '../../helpers/helper';
+import SearchIcon  from '@mui/icons-material/Search';
+import  Modal from '../../components/Modal/modal'
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import http from '../../services/http';
 import styles from "./style.module.css";
 
 
 export default function Produtos() {
-
+  
+  //HOOKS
    const { restaurante } = useContext(RestauranteContext);
    const [produtos, setProdutos] = useState([]);
    const [loading, setLoading] = useState(true);
+   const [paginaAtual, setPaginaAtual] = useState(1);
+   const [pagination, setPagination] = useState(0);
+   const [search, setSearch] = useState('');
+ 
+  
+
+   //FUNCTIONS
     
-   const loadProdutos = async()=> {
+   const loadProdutos = async(pagina)=> {
 
       try {
-            const { data } = await http.get(`/produtos/${restaurante.restaurante_id}`)
-            setProdutos(data.produtos)
+            const { data } = await http.get(`/admin/${restaurante.restaurante_id}/produtos`,{
+              params : {page : pagina}
+            });
+            setProdutos(data.result);
+            setPagination(data.paginas)
       } catch (error) {
-         console.log(error?.response?.data)
+            console.log(error?.response?.data)
       }
       finally {
         setLoading(false);
@@ -43,29 +57,84 @@ export default function Produtos() {
         
    }
 
+   const inputSearch = async()=> {
+      
+       if(!search.length || search.length > 20) return;
+
+       try {
+              const { data } = await http.get(`/admin/produtos/${restaurante.restaurante_id}/produto?q=${search}`)
+
+              if(data.result.length) {
+                    setProdutos(data.result)
+               }else {
+                    setProdutos([])
+               }
+
+       } catch (error) {
+        console.log(error?.response)
+       }
+   }
+
+   const emptyInput = ()=> {
+      if(search.length <= 1) {
+         loadProdutos();
+      }
+   }
+
+   
+
+
    useEffect(()=> {
-      loadProdutos();
+     if(produtos.length) return;
+      loadProdutos(paginaAtual);
    },[])
 
    if(loading) return <div>Carregando...</div>
 
     return (
+     
+          
         <div className={styles.container}>
-            <h1>Produtos</h1>
+          
+            <div className={`${styles.flex} ${styles.itemsCenter} ${styles.spaceBetween}`}>
+                <h1>Produtos</h1>
+                   <Modal title="Adicionar novo produto" />
+                <div className={styles.inputArea}>
+                   <input 
+                    className={styles.input}
+                    type="text" 
+                    value={search} 
+                    maxLength={20}
+                    onKeyDown={emptyInput}
+                    onChange={(text)=> setSearch(text.target.value)}
+                   />
+                   <button onClick={inputSearch}>
+                    <SearchIcon color='primary' cursor='pointer' />
+                   </button>
+                </div>
+            </div>
+
             <div className={styles.cardContainer}>
                  {produtos.length ? (
                     produtos.map((item, index)=> (
-                        <div className={`${styles.flex} ${styles.spaceBetween} ${styles.itemsCenter}`} key={index}>
-                            <div className={`${styles.flex}  ${styles.itemsCenter} `}>
-                              <img className={`${styles.thumb}`}  src={item.imgurl} />
-                                <span className={`${styles.textDarkGray} ${styles.fontBold}`}>{item.name}</span> 
+                        <div className={`${styles.cardItem}`} key={index}>
+                            <div className={`${styles.flex} ${styles.flex1} ${styles.itemsCenter}`}>
+                              <div className={styles.imgContainer}>
+                                  <img className={`${styles.thumb}`}  src={item.imgurl} />
+                              </div>
+                            <div className={`${styles.ml5}`}>
+                               <span className={`${styles.textDarkGray} ${styles.textMedium} ${styles.fontBold}`}>{item.name}</span> 
                             </div>
-
-                            <div className={`${styles.itemsCenter} ${styles.flex} ${styles.description}`}>
+                             
+                            </div>
+ 
+                          
+                            <div className={`${styles.itemsCenter} ${styles.description}`}>
                                  <span className={`${styles.textSmall} ${styles.textMediumGray}`}>{item.description}</span>
                             </div>
+                        
 
-                            <div>
+                            <div className={styles.price}>
                                 {priceConverter(item.price)}
                             </div>
 
@@ -86,17 +155,32 @@ export default function Produtos() {
                           <div className={styles.ml5}>
                                <span className={styles.textMediumGray}> {item.active ? 'ativo' : 'inativo'} </span>
                           </div>
-                        
-                         </div>
-                            
+                            </div>
                          
                         </div>
                     ))
                  ) : 
-                  <div>sem produtos cadastrados </div>
+                  <div><Inventory2OutlinedIcon sx={{ fontSize: 50, color: '#ccc' }} />SEM RESULTADOS</div>
                  }
   
             </div>
+            <div className={styles.listPages}>
+                {Array.from({length : pagination}, (_, i)=> {
+                    const pagina = i + 1;
+
+              return (
+                  <button onClick={()=> {
+                    setPaginaAtual(pagina)
+                    loadProdutos(pagina)
+                  }}
+                      className={paginaAtual === pagina ? styles.activePage : ' ' }>
+                    {pagina}
+                    </button>
+                )
+                })}
+             </div>
+             
         </div>
+          
     )
 }

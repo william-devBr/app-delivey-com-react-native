@@ -134,14 +134,13 @@ export const styles = {
 
     },
     imgContainer : {
-      width : 100,
-      height : 80,
-      overflow : 'hidden',
-       borderRadius : 8
+      width: 75,
+      overflow:'hidden',
+
     },
     thumbItem : {
-        width: "100%",
-        height: 75,
+       width: '100%',
+       height: '100%'
        
     },
     icone : {

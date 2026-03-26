@@ -10,19 +10,64 @@
     font-weight: bold;
     font-size: 24px;
 }
-
+.radioArea {
+    display: flex;
+    width: 300px;
+     background-color: #fff;
+     padding: 8px;
+     border: 1px solid #c3c3c3
+}
+.areaCadastro {
+    position: absolute;
+    bottom:60px;
+    right: 20px;
+}
+.btnCadastro {
+    background-color: var(--primary-button);
+    display: flex;
+    color: white;
+    font-weight: bold;
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 1px 2px 2px rgba(0,0,0,0.3);
+}
 .cardContainer {
-    background-color: #fff;
     width: 100%;
+    height: 350px;
     padding: 8px;
+    margin-top: 10px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+.cardItem { 
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Alinha tudo perfeitamente pelo centro vertical */
+  gap: 20px;           /* Cria um espaçamento padrão entre os elementos */
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+.imgContainer {
+    border-radius: 100%;
+    border: 1px solid #c3c3c3;
 }
 .description {
-    flex: 2;
-    width: 100%;
-    max-width: 25%;
+    flex: 1;
     overflow:hidden;
     flex-wrap: wrap;
+    text-overflow: ellipsis;
    
+}
+.price {
+    white-space: nowrap; /* Impede que o "R$" fique em uma linha e o valor em outra */
+  font-weight: bold;
+  min-width: 80px;     /* Garante que todos os preços ocupem o mesmo espaço */
+  text-align: right;
 }
 .ml5 {
     margin-left: 10px;
@@ -30,4 +75,40 @@
 
 .width100 {
     width: 100px !important;
+}
+.inputArea {
+    background-color: #fff;
+    border: 1px solid #c4c4c4;
+    border-radius: 8px;
+     padding: 8px;
+}
+
+.input:focus {
+    outline: none;
+}
+
+
+.listPages {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+
+}
+.listPages button {
+
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #c3c3c3;
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 15px
+
+}
+
+.activePage {
+    background-color: royalblue !important;
+    color: white;
+    font-weight: 700;
 }

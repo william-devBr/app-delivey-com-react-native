@@ -35,6 +35,26 @@ class AdminService {
                return { statusCode : 500, result : [], total: 0, message : error.message}
           }
      }
+
+     async produtos(id_restaurante, limit, offset) {
+
+           try {
+                 const result = await AdminRepository.produtos(id_restaurante, limit, offset);
+                 return {statusCode: 200, result: result.resData.rows, message : 'success', total : result.resTotal.rows[0].total}
+           
+               } catch (error) {
+               return {statusCode :500, message : error.message, result : []}
+           }
+     }
+     
+     async busca(busca,restaurante_id ) {
+          try {
+                const result = await AdminRepository.busca(busca, restaurante_id);
+                return {result: result.rows, statusCode: 200, message : 'success'}
+          } catch (error) {
+               return {result: [], statusCode: 500, message: error.message}
+          }
+     }
 }
 
 module.exports = new AdminService;
