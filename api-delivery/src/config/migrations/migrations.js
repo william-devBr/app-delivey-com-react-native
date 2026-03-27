@@ -33,14 +33,16 @@ async function runMigrations() {
       `);
       console.log('categoria CATEGORIA RESTAURANTES criado com sucesso')
 
-    /** RESTAURANTE */
+    /** RESTAURANTE taxID=CNPJ/CPF */
     await db.query(`
       CREATE TABLE IF NOT EXISTS restaurante (
         restaurante_id SERIAL PRIMARY KEY,
         proprietario INT NOT NULL,
         nome VARCHAR(100) NOT NULL ,
-        foto TEXT NULL,
-        icone TEXT NULL,
+        taxId VARCHAR(20) NOT NULL,
+        descricao VARCHAR (200) NULL,
+        img_capa TEXT NULL,
+        img_logo TEXT NULL,
         id_categoria INT NOT NULL,
         vl_taxa_entrega NUMERIC(10,2) NOT NULL DEFAULT 0.00, 
         pedido_minimo NUMERI(10,2)  NULL DEFAULT 0.00,
@@ -63,8 +65,35 @@ async function runMigrations() {
     `);
     console.log('Tabela RESTAURANTE criada com sucesso!');
 
+    /**HORÁRIO DE FUNCIONAMENTO */
+    await db.query(`
+         CREATE TABLE IF NOT EXISTS horarios_funcionamento (
+               restaurante_id INT,
+               dia_semana INT DEFAULT 1,
+               abertura TIME,
+               fechamento TIME,
 
-    /** ENDERECO */
+               FOREIGN KEY(restaurante_id) REFERENCES restaurante(restaurante_id)
+         );
+      `);
+      console.log('tabela HORÁRIO de FUNCIONAMENTO criado com sucesso');
+
+      /** FORMAS DE PAGAMENTO */
+      await db.query(`
+          CREATE TABLE IF NOT EXISTS forma_pagamento (
+            id SERIAL PRIMARY KEY,
+            restaurante_id INT NOT NULL,
+            debito BOOLEAN DEFAULT true,
+            credito BOOLEAN DEFAULT true,
+            dinheiro BOOLEAN DEFAULT true,
+            pix BOOLEAN DEFAULT true,
+
+            FOREIGN KEY(restaurante_id) REFERENCES restaurante(restaurante_id)
+          );
+        `);
+      console.log('tabela FORMA DE PAGAMENTO criada com sucesso')
+    
+      /** ENDERECO */
     await db.query(`
       CREATE TABLE IF NOT EXISTS endereco (
         endereco_id SERIAL PRIMARY KEY,
@@ -92,8 +121,7 @@ async function runMigrations() {
         categoria_id SERIAL PRIMARY KEY,
         restaurante_id INT NOT NULL,
         nome VARCHAR(50) NOT NULL,
-        active BOOLEAN NOT NULL DEFAULT true,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        ordem INT(1) NULL,
        
           FOREIGN KEY (restaurante_id)
           REFERENCES restaurante(restaurante_id)
@@ -112,6 +140,7 @@ async function runMigrations() {
         description VARCHAR(200),
         imgUrl VARCHAR(255) NULL,
         price NUMERIC(10,2) NOT NULL,
+        destacado BOOLEAN DEFAULT false,
         active BOOLEAN NOT NULL DEFAULT true,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -197,7 +226,7 @@ async function runMigrations() {
 
   } catch (error) {
 /*********ERROR**********************************************************/
-    console.error('❌ Erro ao executar migrations:', error);
+    console.error('❌ Erro ao executar migrations:', error.message);
   }
 
 

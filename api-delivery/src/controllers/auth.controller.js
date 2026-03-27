@@ -12,17 +12,19 @@ class AuthController {
     async login(req, res) {
 
         const {email, password} = req.body;
+
+        if(!email || !password) return res.status(403).json({message : 'Bad Request', ok: false})
   
         let user = await AuthService.login(email);
     
         if(!user || user.rowCount === 0) {
-            return res.status(401).json({message : 'E-mail ou senha incorretos', ok: false})
+            return res.status(200).json({message : 'E-mail ou senha incorretos', ok: false})
         }
         user = user.rows[0];
         
         const hashCompare = await bcrypt.compare(password, user.password);
       
-        if( !hashCompare ) return res.status(401).json({ok: false, message : 'E-mail ou senha incorretos'});
+        if( !hashCompare ) return res.status(200).json({ok: false, message : 'E-mail ou senha incorretos'});
 
 
         const token = createToken(user.user_id);

@@ -42,39 +42,28 @@ class RestauranteRepository {
         const {id_usuario, id_restaurante} = restaurante;
 
         const sql = `SELECT 
-          CASE WHEN f.id_usuario IS NULL THEN 'N' ELSE 'S' END AS favorit,
-           r.*,
-            COALESCE(
-              ( 
-               SELECT json_agg(p)
-              FROM produto p
-               WHERE p.restaurante_id = r.restaurante_id
-               ),
-               '[]'
-            ) AS produtos,
-              COALESCE(
-              ( 
-             SELECT json_agg(c)
-              FROM categoria c
-              WHERE c.restaurante_id = r.restaurante_id
-              AND EXISTS (
-               SELECT 1 FROM produto p
-               WHERE p.categoria_id = c.categoria_id
-              )
-                ),
-               '[]'
-            ) AS categorias
-
-            FROM restaurante r
-            LEFT JOIN favorito f ON (f.id_restaurante = r.restaurante_id AND f.id_usuario = $1)
-            LEFT JOIN produto p ON p.restaurante_id = r.restaurante_id
-            LEFT JOIN categoria c ON c.restaurante_id = r.restaurante_id
-            WHERE r.restaurante_id = $2
-            GROUP BY r.restaurante_id,f.id_usuario
-          `;
+                        CASE WHEN f.id_usuario IS NULL THEN 'N' ELSE 'S' END AS favorit,
+                        r.*,
+                        COALESCE(
+                            (SELECT json_agg(p) 
+                            FROM produto p 
+                            WHERE p.restaurante_id = r.restaurante_id), 
+                            '[]'
+                        ) AS produtos,
+                        COALESCE(
+                            (SELECT json_agg(DISTINCT c) 
+                            FROM categoria c
+                            INNER JOIN produto p ON p.categoria_id = c.categoria_id
+                            WHERE c.restaurante_id = r.restaurante_id),
+                            '[]'
+                        ) AS categorias
+                    FROM restaurante r
+                    LEFT JOIN favorito f ON (f.id_restaurante = r.restaurante_id AND f.id_usuario = $1)
+                    WHERE r.restaurante_id = $2
+                    GROUP BY r.restaurante_id, f.id_usuario `;
 
 
-          return await db.query(sql,[id_usuario,id_restaurante])
+            return await db.query(sql,[id_usuario,id_restaurante])
     }
 
     /** quando o usuário efetuar a busca */

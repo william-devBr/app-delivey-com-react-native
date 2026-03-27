@@ -46,6 +46,16 @@ class AdminService {
                return {statusCode :500, message : error.message, result : []}
            }
      }
+
+     async updateProduto(produto, produto_id, restaurante_id) {
+
+          try {
+                await AdminRepository.updateProduto(produto, produto_id, restaurante_id);
+                return {message : 'success', statusCode : 200}
+          } catch (error) {
+               return {message : error.message, statusCode: 500}
+          }
+     }
      
      async busca(busca,restaurante_id ) {
           try {
@@ -53,6 +63,45 @@ class AdminService {
                 return {result: result.rows, statusCode: 200, message : 'success'}
           } catch (error) {
                return {result: [], statusCode: 500, message: error.message}
+          }
+     }
+
+     async addCategoria(name, id_restaurante) {
+          try {
+               const result = await AdminRepository.addCategoria(name, id_restaurante);
+               return {statusCode: 201, result: result.categoria_id, message : 'success'}
+          } catch (error) {
+               return {statusCode : 500, message : error.message}
+          }
+     }
+
+     async categorias(id_restaurante) {
+
+          try {
+                const { rows } = await AdminRepository.categorias(id_restaurante);
+                return {statusCode: 200, result : rows, message: 'success'} 
+          } catch (error) {
+               return {statusCode: 500, result: [], message: 'ocorreu um erro ' + error.message}
+          }
+     } 
+
+     async updateCategoria(id_restaurante, id, name) {
+
+          try {
+                await AdminRepository.updateCategoria(id_restaurante,id,name);
+                return {statusCode: 201, message : 'success'}
+          } catch (error) {
+               return {statusCode: 500, message : error.message}
+          }
+     }
+
+     async deleteCategoria(id_restaurante, id_categoria) {
+
+          try {
+                await AdminRepository.deleteCategoria(id_restaurante, id_categoria) ;
+                return {statusCode:200, message : 'success'}
+          } catch (error) {
+               return {statusCode : 500, message : error.message}
           }
      }
 }

@@ -58,6 +58,24 @@ class AdminController {
 
     }
 
+    async updateProduto(req, res) {
+
+         const produto = {
+           
+            categoria_id : req.body.categoria_id,
+            name : req.body.name,
+            description : req.body.description,
+            imgurl : req.body.imgurl,
+            price : parseFloat(req.body.price),
+            active : req.body.active
+         }
+
+         const {restaurante_id, produto_id} = req.body;
+
+         const {message,statusCode} = await AdminService.updateProduto(produto, produto_id, restaurante_id)
+         return res.status(statusCode).json({message});
+    }
+
     async busca(req,res) {
            
          const {q} = req.query;
@@ -66,6 +84,40 @@ class AdminController {
 
          const {statusCode, message, result} = await AdminService.busca(busca, id_restaurante);
          return res.status(statusCode).json({result, message});
+    }
+
+    async addCategoria(req,res) {
+
+        const{name, id_restaurante} = req.body;
+
+        const {result, message, statusCode} = await AdminService.addCategoria(name, id_restaurante);
+        console.log(result)
+        return res.status(statusCode).json({result, message});
+    }
+
+    async categorias(req, res) {
+
+        const {id_restaurante} = req.params;
+
+        const {statusCode, message, result} = await AdminService.categorias(parseInt(id_restaurante));
+        return res.status(statusCode).json({result, message})
+    }
+
+    async updateCategoria(req, res) {
+
+        const {id_restaurante} = req.params;
+        const {id, name} = req.body
+
+        const {statusCode, message} = await AdminService.updateCategoria(id_restaurante, id, name);
+        return res.status(statusCode).json({message});
+    }
+
+    async deleteCategoria(req, res) {
+
+        const {id_restaurante, id_categoria} = req.params;
+
+        const {message, statusCode} = await AdminService.deleteCategoria(id_restaurante, id_categoria);
+        return res.status(statusCode).json({message});
     }
 }
 
