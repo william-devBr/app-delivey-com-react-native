@@ -8,5 +8,16 @@ api-delivery/.env
 api-delivery/sintegra.php
 app-delivery/src/server/baseUrl.js
 
+resto-magic-dashboard/node_modules
+resto-magic-dashboard/dist
+resto-magic-dashboard/dist-ssr
+resto-magic-dashboard/.vscode/*
+resto-magic-dashboard/.idea
+resto-magic-dashboard/.DS_STORE
+resto-magic-dashboard/.sln
+resto-magic-dashboard/.logs
+
 
 .gitignore
+resto-magic-dashboard/.gitgnore
+resto-magic-dashboard/.git
