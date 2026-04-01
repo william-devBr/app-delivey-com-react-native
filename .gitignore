@@ -8,6 +8,7 @@ api-delivery/.env
 api-delivery/sintegra.php
 api-delivery/corrgir-sped.php
 app-delivery/src/server/baseUrl.js
+api-delivery/uploads
 
 resto-magic-dashboard/node_modules
 resto-magic-dashboard/dist
