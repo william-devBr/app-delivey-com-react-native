@@ -9,7 +9,7 @@ class AuthRepository {
 
     async login(email) {
 
-        const sql = `SELECT * FROM ${this.table} WHERE email = $1`
+        const sql = `SELECT * FROM ${this.table} WHERE email = $1`;
         return await db.query(sql,[email]);
     }
 

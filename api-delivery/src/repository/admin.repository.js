@@ -9,7 +9,19 @@ class AdminRepository {
 
      async index(usuario_id) {
          
-          const sql = `SELECT * FROM restaurante WHERE proprietario = $1`;
+          const sql = `SELECT r.*,
+                   JSON_AGG(
+                       JSON_BUILD_OBJECT(
+                         'dia_semana', f.dia_semana,
+                         'abertura', f.horario_abertura,
+                         'fechamento', f.horario_fechamento,
+                         'fechado', f.fechado
+                       )
+                   ) AS horario_funcionamento
+          FROM restaurante r
+          LEFT JOIN horario_funcionamento f ON(r.restaurante_id = f.restaurante_id)
+          WHERE r.proprietario = $1
+          GROUP BY r.restaurante_id`;
           return await db.query(sql,[usuario_id])
      }
      /** define o status para aberto ou fechado */
@@ -21,7 +33,7 @@ class AdminRepository {
 
           return await db.query(sql,[status, restaurant_id])
      }
-
+ 
      /** lista os pedidos pelo id do restaurante */
      async pedidos(params, limit, offset) {
 
@@ -121,6 +133,54 @@ class AdminRepository {
 
           const sql = `DELETE FROM categoria WHERE categoria_id = $1 AND restaurante_id = $2`;
           return await db.query(sql,[id_categoria, id_restaurante]);
+     }
+
+     async horarioFuncionamento(horario, restaurante_id) {
+
+        try{
+            await db.query('BEGIN');
+
+          for(let h of horario) {
+ 
+          let query = `INSERT INTO horario_funcionamento(restaurante_id, dia_semana, horario_abertura, horario_fechamento, fechado)
+                        VALUES($1,$2,$3,$4,$5)
+                        ON CONFLICT (restaurante_id, dia_semana)
+                        DO UPDATE SET
+                         horario_abertura = EXCLUDED.horario_abertura,
+                         horario_fechamento = EXCLUDED.horario_fechamento,
+                         fechado = EXCLUDED.fechado
+          `;
+
+          const values = [restaurante_id, h.dia_semana,h.abertura, h.fechamento,h.fechado]
+
+          await db.query(query, values);
+
+          }
+        await db.query('COMMIT');
+        return true;
+
+        }catch(error) {
+          await db.query('ROLLBACK');
+          return error;
+        }
+     }
+
+     async statusProduto(restaurante_id, produto_id, status) {
+
+          const sql = `UPDATE produto SET active = $1 WHERE produto_id = $2 AND restaurante_id = $3`;
+
+          return await db.query(sql,[status,produto_id, restaurante_id]);
+     }
+
+     async addProduto(produto) {
+
+          const {restaurante_id,name, description, price,categoria_id, imgurl, active} = produto
+
+          const sql = `INSERT INTO produto (restaurante_id, categoria_id,name, description,imgurl, price,active)
+                       VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING produto_id
+          `;
+
+          return await db.query(sql,[restaurante_id, categoria_id, name, description, imgurl, price, active]);
      }
 
 }

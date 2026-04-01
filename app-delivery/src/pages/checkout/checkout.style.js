@@ -11,7 +11,6 @@ export const styles = {
   
     card : {
         alignItems:"center",
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         padding : 10,
@@ -22,7 +21,6 @@ export const styles = {
 
     },
       cardArea : {
-    
           marginTop:20,
           marginBottom: 40
     },
@@ -47,13 +45,15 @@ export const styles = {
      cardPrice : {
         color: COLORS.dark_gray,
         fontSize: FONT_SIZE.medium
-     }
-     ,
+     },
+     titleDelivery :  {
+        color: COLORS.dark_gray,
+        fontSize: FONT_SIZE.normal,
+        marginTop: 20,
+         marginBottom: 10
+     },
      detalhes : {
-         position: "absolute",
-         bottom: 30,
-         left: 0,
-         right: 0,
+        
          backgroundColor: COLORS.white,
          borderRadius: 10,
          padding: 15,
@@ -105,5 +105,26 @@ export const styles = {
     color: '#333',
 
     },
+    paymentTitle :{
+        color: COLORS.dark_gray,
+        fontSize: FONT_SIZE.normal,
+        marginTop: 20,
+        marginBottom: 10,
+       
+    },
+    paymentMethod : {
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 5,
+        backgroundColor: "#f0f0f0",
+        marginBottom: 10
+    },
+   
+    paymentMethodText : {
+        marginLeft: 10,
+        fontSize: FONT_SIZE.medium,
+    }
+
 
 }

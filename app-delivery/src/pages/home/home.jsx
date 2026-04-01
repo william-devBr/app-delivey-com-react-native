@@ -10,6 +10,7 @@ import http from "../../server/index";
 import { styles } from "./home.style";
 
 
+
 export default function Home(props) {
 
 
@@ -45,12 +46,12 @@ export default function Home(props) {
         try {
                 const { data }  =  await http.get('restaurante');
                 console.log(data)
-                  setRestaurantes(data.restaurantes)
+                setRestaurantes(data.restaurantes)
 
           } catch (error) {
-            console.log(error.message)
+               console.log(error.message)
                if(error.response.data.error) {
-                  console.log(error.response?.data.error)
+                  console.log(error.response)
                }
                   setError('Não foi possível carregar os dados\n tente novamente mais tarde.')
           }
@@ -146,6 +147,7 @@ export default function Home(props) {
                                name={restaurant.nome} 
                                address={restaurant?.endereco}
                                imgUrl={restaurant.icone}
+                               horarios={restaurant.horarios}
                                icon = {restaurant.favorit === "S"  ? "favorite" : "favorite-outline"}
                                onPress={()=> openCardapio(restaurant.restaurante_id)}
                                />

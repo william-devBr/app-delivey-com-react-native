@@ -213,11 +213,11 @@ if(error) {
                            {
                            rest.itens.filter((produto)=>   produto.categoria_id === categoria.categoria_id )
                              .map((item, index)=> (
-                               
+                             
                              <Pressable 
-                                style={styles.card} 
+                                style={[styles.card,!item.active && styles.opacity]} 
                                 key={index + 1}
-                                onPress={()=> handleItem(item)}
+                                onPress={()=> {item.active ? handleItem(item) : null } }
                                 >
                                    
                                     <View style={styles.imgContainer} >
@@ -232,10 +232,12 @@ if(error) {
 
                                 <View>
                                     <Text style={styles.cardPrice}>
-                                        { new Intl.NumberFormat("pt-BR",{style : "currency", currency : "BRL"}).format(item.price)}
+                                        { item.active ? new Intl.NumberFormat("pt-BR",{style : "currency", currency : "BRL"}).format(item.price) : 'indisponível'}
                                     </Text>
                                 </View>
                           </Pressable> 
+                        
+
                          
                              ))
 

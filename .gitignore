@@ -6,6 +6,7 @@ app-delivery/.expo/
 api-delivery/.vscode/
 api-delivery/.env
 api-delivery/sintegra.php
+api-delivery/corrgir-sped.php
 app-delivery/src/server/baseUrl.js
 
 resto-magic-dashboard/node_modules

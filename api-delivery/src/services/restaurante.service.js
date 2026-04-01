@@ -31,6 +31,7 @@ class RestauranteService {
 
               return {statusCode : 200,itens : rest, message : 'success'}
         } catch (error) {
+            console.log(error.message)
              return {statusCode : 500, itens: [], message : 'Ocorreu um erro interno ' + error.message}
             
         }

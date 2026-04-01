@@ -5,6 +5,7 @@
 
 const AdminService = require('../services/admin.service');
 
+
 class AdminController {
 
     async index(req, res) {
@@ -56,6 +57,18 @@ class AdminController {
 
         return res.status(statusCode).json({message, result, paginas});
 
+    }
+
+    async addProduto(req, res) {
+      
+          const {body, file} = req;
+          if(file) {
+             body.imgurl = `/uploads/${file.filename}`;
+          }
+          
+          const { statusCode, message, result } = await AdminService.addProduto(body);
+
+          return res.status(statusCode).json({message, img: body?.imgurl, result})
     }
 
     async updateProduto(req, res) {
@@ -118,6 +131,24 @@ class AdminController {
 
         const {message, statusCode} = await AdminService.deleteCategoria(id_restaurante, id_categoria);
         return res.status(statusCode).json({message});
+    }
+
+    async horarioFuncionamento(req, res) {
+
+        const {horario_funcionamento, restaurante_id} = req.body
+
+         const {message, statusCode} = await AdminService.horarioFuncionamento(horario_funcionamento, restaurante_id);
+
+        return res.status(statusCode).json({message, statusCode})
+    }
+
+    async statusProduto(req, res) {
+
+        const {id_restaurante} = req.params;
+        const {id, active} = req.body;
+
+        const {message, statusCode} = await AdminService.statusProduto(id_restaurante, id, active);
+        return res.status(statusCode).json({message, statusCode});
     }
 }
 

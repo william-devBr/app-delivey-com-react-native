@@ -53,6 +53,9 @@ async function runMigrations() {
         estado  VARCHAR(45) NOT NULL,
         cep     VARCHAR(15) NOT NULL,
         aberto BOOLEAN DEFAULT false,
+        raio_entrega FLOAT DEFAULT 0,
+        tempo_min VARCHAR(3) DEFAULT 30,
+        tempo_max VARCHAR(3) DEFAULT 50,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -67,13 +70,15 @@ async function runMigrations() {
 
     /**HORÁRIO DE FUNCIONAMENTO */
     await db.query(`
-         CREATE TABLE IF NOT EXISTS horarios_funcionamento (
+         CREATE TABLE IF NOT EXISTS horario_funcionamento (
                restaurante_id INT,
                dia_semana INT DEFAULT 1,
-               abertura TIME,
-               fechamento TIME,
+               horario_abertura TIME,
+               horario_fechamento TIME,
+               fechado BOOLEAN DEFAULT true,
 
-               FOREIGN KEY(restaurante_id) REFERENCES restaurante(restaurante_id)
+               FOREIGN KEY(restaurante_id) REFERENCES restaurante(restaurante_id),
+               CONSTRAINT pk_horario_funcionamento UNIQUE (restaurante_id, dia_semana)
          );
       `);
       console.log('tabela HORÁRIO de FUNCIONAMENTO criado com sucesso');
@@ -117,7 +122,7 @@ async function runMigrations() {
 
     /** CATEGORIA */
     await db.query(`
-      CREATE TABLE IF NOT EXISTS categoria (
+      CREATE TABLE IF NOT EXISTS categoria(
         categoria_id SERIAL PRIMARY KEY,
         restaurante_id INT NOT NULL,
         nome VARCHAR(50) NOT NULL,
@@ -165,6 +170,8 @@ async function runMigrations() {
        valor_pedido NUMERIC(10,2),
        status_pedido INT DEFAULT 0,
        vl_taxa_entrega NUMERIC(10,2) DEFAULT 0,
+       vl_total_pedido NUMERIC(10,2) NOT NULL,
+       metodo_pagamento VARCHAR(20) NOT NULL,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
 
@@ -226,7 +233,7 @@ async function runMigrations() {
 
   } catch (error) {
 /*********ERROR**********************************************************/
-    console.error('❌ Erro ao executar migrations:', error.message);
+    console.error('❌ Erro ao executar migrations:', error);
   }
 
 

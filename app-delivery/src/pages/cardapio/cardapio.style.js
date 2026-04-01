@@ -177,6 +177,9 @@ export const styles = {
     },
     fontSmall : {
         fontSmall : FONT_SIZE.small
+    },
+    opacity : {
+        opacity: 0.5
     }
      
 }

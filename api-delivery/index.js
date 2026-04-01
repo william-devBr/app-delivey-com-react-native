@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const http = require('http');
+
 const {init} = require('./src/config/socket/socket.js');
 
 const server = http.createServer(app);
@@ -18,14 +19,9 @@ const AdminRoute = require('./src/routes/admin.route');
 
 app.use(express.json());
 app.use(cors());
-// app.use(express.static(__dirname));
-
-// app.get('/simulador', (req, res)=> {
-//     res.sendFile(path.join(__dirname, 'simulador.html'))
-// })
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/auth', AuthRoute);
-
 /** rotas protegidas */
 app.use('/usuarios', UserRoute);
 app.use('/restaurante',  RestauranteRoute);
@@ -34,6 +30,7 @@ app.use('/pedidos', PedidoRoute)
 app.use('/produtos', ProdutosRoute)
  app.use('/admin', AdminRoute);
 
+ /**web socket de pedidos */
 init(server);
 
 server.listen(3001,(err)=> {

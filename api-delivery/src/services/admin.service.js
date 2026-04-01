@@ -104,6 +104,36 @@ class AdminService {
                return {statusCode : 500, message : error.message}
           }
      }
+
+     async horarioFuncionamento(horario, restaurante_id) {
+
+          try{
+              await AdminRepository.horarioFuncionamento(horario, restaurante_id);
+              return {message : 'success', statusCode : 201}
+          }catch(error) {
+           return {message: erorr.message, statusCode : 500}
+          }
+     }
+
+     async statusProduto(restaurante_id, produto_id, status) {
+
+          try{
+               await AdminRepository.statusProduto(restaurante_id, produto_id, status);
+               return {statusCode : 201, message : 'success'}
+          }catch(error) {
+               return {statusCode : 500, message: error.message}
+          }
+     }
+
+     async addProduto(produto) {
+
+          try {
+              const result = await AdminRepository.addProduto(produto);
+              return {message: 'success', statusCode : 201, result : result.rows[0]}
+          }catch(error) {
+               return {message : error.message, statusCode : 500}
+          }
+     }
 }
 
 module.exports = new AdminService;

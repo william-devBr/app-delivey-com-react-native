@@ -20,14 +20,28 @@ class RestauranteRepository {
          *  trazendo dados do restauarante e indicando se é favorito do usuário 
          * 
          * */
-
-         const sql = `SELECT CASE WHEN f.id_usuario IS NULL THEN 'N' ELSE 'S' END AS favorit,
-                      r.restaurante_id, r.nome,r.endereco,r.icone, r.aberto
+       try{
+                   const sql = `SELECT CASE WHEN f.id_usuario IS NULL THEN 'N' ELSE 'S' END AS favorit,
+                      r.restaurante_id, r.nome,r.endereco,r.icone, r.aberto,
+                      COALESCE(
+                        (SELECT json_agg(h)
+                           FROM horario_funcionamento h
+                           WHERE h.restaurante_id = r. restaurante_id
+                        ),
+                        '[]'
+                      )as horarios
                       FROM restaurante r
-                       LEFT JOIN favorito f ON (f.id_restaurante = r.restaurante_id AND f.id_usuario = $1)
+                      LEFT JOIN favorito f ON (f.id_restaurante = r.restaurante_id AND f.id_usuario = $1)
                       ORDER BY r.aberto DESC`;
                       
-         return await db.query(sql,[id_usuario]);
+                   return await db.query(sql,[id_usuario]);
+
+
+       }catch(error) {
+          console.log(error.message)
+          return error;
+       }
+         
      }
 
   
@@ -45,7 +59,7 @@ class RestauranteRepository {
                         CASE WHEN f.id_usuario IS NULL THEN 'N' ELSE 'S' END AS favorit,
                         r.*,
                         COALESCE(
-                            (SELECT json_agg(p) 
+                            (SELECT json_agg(p ORDER BY p.active DESC, p.name ASC) 
                             FROM produto p 
                             WHERE p.restaurante_id = r.restaurante_id), 
                             '[]'
@@ -60,7 +74,7 @@ class RestauranteRepository {
                     FROM restaurante r
                     LEFT JOIN favorito f ON (f.id_restaurante = r.restaurante_id AND f.id_usuario = $1)
                     WHERE r.restaurante_id = $2
-                    GROUP BY r.restaurante_id, f.id_usuario `;
+                    GROUP BY r.restaurante_id, f.id_usuario`;
 
 
             return await db.query(sql,[id_usuario,id_restaurante])

@@ -1,8 +1,18 @@
 import {createContext, useState} from 'react';
 
+
+
+
 const CartContext = createContext();
 
 function CartProvider({children}){
+
+  
+const paymentLabels = {
+    maquininha : {name : "Maquininha (débito/crédito)", icon : 'credit-card' },
+    pix : {name : "Pix", icon : 'qr-code'},
+    dinheiro : {name : "Dinheiro", icon : "attach-money"}
+}
     
    const [cart, setCart] = useState([]);/** inicia o carrinho vazio */
    const [ownerCart, setOwner] = useState(null);
@@ -54,7 +64,9 @@ function CartProvider({children}){
   }
 
     return (
-        <CartContext.Provider value={{cart, addItem, removeItem, taxaEntrega, setTaxaEntrega,ownerCart, setOwner, clearCart}}>
+        <CartContext.Provider value={{cart, addItem, removeItem, taxaEntrega, 
+         setTaxaEntrega,ownerCart, setOwner, clearCart, paymentLabels
+         }}>
           {children}
         </CartContext.Provider>
     )

@@ -18,21 +18,28 @@ import { getStorage } from "../../storage/storage.js";
 import { styles } from "./checkout.style.js";
 
 
-   
+
 
 export default function Checkout(props) {
 
- const { cart, taxaEntrega, ownerCart ={}, clearCart } = useContext(CartContext);
+ const { cart, taxaEntrega, ownerCart ={}, clearCart, paymentLabels } = useContext(CartContext);
 
  const { user } = useContext(AuthContext);
 
 const [checked, setChecked] = useState('atual');
 const [loading, setLoading] = useState(false);
 const [modalVisible, setModalVisible] = useState(false);
+const [paymentMethod,setMethodPayment] = useState(false);
 
+
+ const paymentSelect = (payment)=> {
+    setMethodPayment(payment);
+ } 
 
  const submitOrder = async() => {
      
+      if(!paymentMethod) return Alert.alert('informe o tipo de pagamento');
+
        const { id_usuario } = await getStorage('user');
        
        const order = {
@@ -104,12 +111,10 @@ if(!cart || cart.length === 0) {
 
 
 return (
-    <>
-    {cart.length > 0 && (
-            
-                <View style={styles.container}>
-
-                <ScrollView>
+      <ScrollView style={styles.container}>
+        <View>
+                  {cart.length > 0 && (    
+                       <>
                         <View style={styles.cardArea}>
                             {cart.length > 0 && cart.map((item,index)=>{
                                     
@@ -126,11 +131,11 @@ return (
                                             </View>
                                     </View>    
                             })}
-                          </View>
-                </ScrollView>
+                        </View>
+               
         
                         <View style={styles.detalhes}>
-                        <Text style={{color: "#c0c0c0", fontSize:14}}>RECEBER EM</Text>
+                            <Text style={styles.titleDelivery}>RECEBER EM</Text>
                             <View style={{flexDirection: "row", justifyContent :"space-between"}}>
                             
                             <View style={{flexDirection :"row", alignItems : "center",flexShrink: 1}}>
@@ -155,6 +160,23 @@ return (
                               }
                             </View>
 
+                            <Text style={styles.paymentTitle}>PAGAMENTO</Text>
+                            <View>
+
+                             {Object.entries(paymentLabels).map(([key, label])=> {
+                                 const pay = paymentLabels[key];
+                                 
+                                 return <Pressable key={key} style={paymentMethod === label ? {...styles.paymentMethod, backgroundColor: '#ed5359', opacity: 0.8} : styles.paymentMethod} onPress={()=> paymentSelect(label)}>
+                                           <MaterialIcons name={pay.icon} size={20} color={ paymentMethod === label ? '#fff' : 'black'} />
+                                          <Text style={paymentMethod === label ? {...styles.paymentMethodText, color: '#fff'} : styles.paymentMethodText}>{pay.name}</Text>
+                                        </Pressable>
+                        })}
+
+                          
+
+                           
+                            </View>
+
                             <View style={styles.detalheFooter}>
                                 <View style={styles.footerArea}>
                                     <Text style={styles.footerText}>Sub-total</Text>
@@ -176,12 +198,11 @@ return (
                                 />
                             </View>
                         </View>
-                </View>
-
-
+                     </>
         ) 
     }
-    </>
+    </View>
+    </ScrollView>
 )
 
 }
